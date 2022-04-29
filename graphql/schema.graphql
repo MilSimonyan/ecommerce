@@ -28,15 +28,15 @@ type Attribute {
 }
 
 input AttributeCreateInput {
-    name: String! @rules(apply: ["required", "min:2"])
-    type: String! @rules(apply: ["required", "min:2"])
+    name: String!
+    type: String!
     products: [Int]
 }
 
 input AttributeUpdateInput{
-    id: ID!,
-    name: String @rules(apply: ["required", "min:2"]),
-    type: String @rules(apply: ["required", "min:2"])
+    id: ID!
+    name: String
+    type: String
 }
 
 type Query {
