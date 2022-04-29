@@ -35,16 +35,18 @@ input AttributeCreateInput {
 
 input AttributeUpdateInput{
     id: ID!,
-    name: String @rules(apply: ["required", "min:2"]),
-    type: String @rules(apply: ["required", "min:2"])
+    name: String @rules(apply: ["min:2"]),
+    type: String @rules(apply: ["min:2"])
 }
 
 type Query {
     #    Find category, attribute
+    project(id:ID! @eq): Product @find
     category(id: ID! @eq): Category @find
     attribute(id: ID! @eq): Attribute @find
 
     #    All categories, attributes
+    products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
 }
