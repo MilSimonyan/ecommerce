@@ -41,10 +41,12 @@ input AttributeUpdateInput{
 
 type Query {
     #    Find category, attribute
+    project(id:ID! @eq): Product @find
     category(id: ID! @eq): Category @find
     attribute(id: ID! @eq): Attribute @find
 
     #    All categories, attributes
+    products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
 }
