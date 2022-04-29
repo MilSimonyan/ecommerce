@@ -39,7 +39,6 @@ final class CreateProduct
             $product->attributes()->attach($attribute);
         }
 
-
         return $product;
     }
 }

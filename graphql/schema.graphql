@@ -49,6 +49,7 @@ type Query {
     products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
+    products:[Product!]
 }
 
 
