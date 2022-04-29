@@ -6,6 +6,8 @@ use App\Models\Product;
 
 final class Products
 {
+
+
     /**
      * @param  null  $_
      * @param  array{}  $args

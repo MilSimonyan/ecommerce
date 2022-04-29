@@ -38,6 +38,7 @@ final class UpdateProduct
             if($attribute = Attribute::find(isset($args['attributes']))) {
                 $product->attributes()->attach($attribute);
             }
+            $product->save();
         }
 
         return $product;

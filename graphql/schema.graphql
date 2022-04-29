@@ -3,7 +3,7 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 type Mutation{
     createProduct(name: String!, description: String! categories: [Int], attributes: [Int]): Product
-    updateProduct(id: ID!, name: String!, description: String!): Product!
+    updateProduct(id: ID!, name: String!, description: String!, categories: [Int], attributes: [Int]): Product!
     deleteProduct(id: ID!): Product!
 
     createAttribute(input: AttributeCreateInput  @spread): Attribute
