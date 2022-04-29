@@ -1,0 +1,77 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Mutation{
+    createProduct(name: String!, description: String! categories: [Int], attributes: [Int]): Product
+    updateProduct(id: ID!, name: String!, description: String!): Product!
+    deleteProduct(id: ID!): Product!
+
+    createAttribute(input: AttributeCreateInput  @spread): Attribute
+    updateAttribute(input: AttributeUpdateInput @spread): Attribute
+    deleteAttribute(id: ID!): Attribute
+
+    createCategory(input: CategoryCreateInput  @spread) : Category
+    updateCategory(id: ID! name: String, description: String): Category
+    deleteCategory(id: ID!) : Category
+}
+
+type Product{
+    id: ID!
+    name: String!
+    description: String!
+}
+
+type Attribute {
+    id: ID!
+    name: String!
+    type: String!
+}
+
+input AttributeCreateInput {
+    name: String! @rules(apply: ["required", "min:2"])
+    type: String! @rules(apply: ["required", "min:2"])
+    products: [Int]
+}
+
+input AttributeUpdateInput{
+    id: ID!,
+    name: String @rules(apply: ["required", "min:2"]),
+    type: String @rules(apply: ["required", "min:2"])
+}
+
+type Query {
+    #    Find category, attribute
+    category(id: ID! @eq): Category @find
+    attribute(id: ID! @eq): Attribute @find
+
+    #    All categories, attributes
+    categories: [Category!]
+    attributes: [Attribute!]
+}
+
+
+type DeleteCategoryResponse {
+    status: String!
+    message: String!
+}
+
+input CategoryCreateInput {
+    name: String!
+    description: String!
+    products: [Int]
+}
+
+"Account of a person who utilizes this application."
+
+type Category {
+    id: ID!
+    name: String!
+    description: String!
+}
+
+type User {
+    "Unique primary key."
+    id: ID!
+    name: String!
+    description: String!
+}
