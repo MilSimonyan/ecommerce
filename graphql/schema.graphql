@@ -11,7 +11,7 @@ type Mutation{
     deleteAttribute(id: ID!): Attribute
 
     createCategory(input: CategoryCreateInput  @spread) : Category
-    updateCategory(id: ID! name: String, description: String): Category
+    updateCategory(id: ID! name: String, description: String, products: [Int]): Category
     deleteCategory(id: ID!) : Category
 }
 
