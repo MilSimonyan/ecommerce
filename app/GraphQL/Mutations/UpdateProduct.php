@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Attribute;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Validation\Factory;
 
@@ -24,11 +26,20 @@ final class UpdateProduct
                 'name' => 'min:3|max:50',
                 'description' => 'min:10',
             ]);
-            $product->update([
-                'name' => $args['name'],
-                'description' => $args['description']
-            ]);
+            if (isset($args['name'])){
+                $product->name = $args['name'];
+            }
+            if (isset($args['name'])){
+                $product->description = $args['description'];
+            }
+            if($category = Category::find(isset($args['categories']))) {
+                $product->categories()->attach($category);
+            }
+            if($attribute = Attribute::find(isset($args['attributes']))) {
+                $product->attributes()->attach($attribute);
+            }
         }
+
         return $product;
     }
 }
