@@ -47,6 +47,7 @@ type Query {
     #    All categories, attributes
     categories: [Category!]
     attributes: [Attribute!]
+    products:[Product!]
 }
 
 
