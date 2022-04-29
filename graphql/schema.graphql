@@ -37,6 +37,7 @@ input AttributeUpdateInput{
     id: ID!
     name: String
     type: String
+    products: [Int]
 }
 
 type Query {
