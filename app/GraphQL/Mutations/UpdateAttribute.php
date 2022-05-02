@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Attribute;
+use App\Models\Product;
 use Illuminate\Validation\Factory;
 
 final class UpdateAttribute
@@ -26,17 +27,21 @@ final class UpdateAttribute
             'type' => 'min:2',
         ]);
 
-        $attribute = Attribute::find($args['id']);
+        if($attribute = Attribute::find($args['id'])) {
+            if (isset($args['name'])) {
+                $attribute->name = $args['name'];
+            }
 
-        if(isset($args['name'])) {
-            $attribute->name = $args['name'];
+            if (isset($args['type'])) {
+                $attribute->name = $args['type'];
+            }
+
+            if($product = Product::find(isset($args['products'])))
+            {
+                $attribute->products()->attach($product);
+            }
+            $attribute->save();
         }
-
-        if(isset($args['type'])) {
-            $attribute->name = $args['type'];
-        }
-
-        $attribute->save();
 
         return $attribute;
     }
