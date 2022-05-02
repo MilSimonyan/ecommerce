@@ -33,10 +33,10 @@ final class UpdateProduct
             if (isset($args['name'])) {
                 $product->description = $args['description'];
             }
-            if ($category = Category::find(isset($args['categories']))) {
+            if (isset($args['categories']) && $category = Category::find($args['categories'])) {
                 $product->categories()->sync($category);
             }
-            if ($attribute = Attribute::find(isset($args['attributes']))) {
+            if (isset($args['attributes']) && $attribute = Attribute::find($args['attributes'])) {
                 $product->attributes()->sync($attribute);
             }
             $product->save();

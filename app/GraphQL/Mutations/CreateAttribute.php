@@ -32,7 +32,7 @@ final class CreateAttribute
             'type' => $args['type'],
         ]);
 
-        if ($product = Product::find(isset($args['products']))) {
+        if (isset($args['products']) && $product = Product::find($args['products'])) {
             $attribute->products()->sync($product);
         }
 
