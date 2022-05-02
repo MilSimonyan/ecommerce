@@ -39,6 +39,12 @@ input AttributeUpdateInput{
     type: String
 }
 
+input CategoryCreateInput {
+    name: String!
+    description: String!
+    products: [Int]
+}
+
 type Query {
     #    Find category, attribute
     project(id:ID! @eq): Product @find
@@ -49,22 +55,12 @@ type Query {
     products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
-    products:[Product!]
 }
-
 
 type DeleteCategoryResponse {
     status: String!
     message: String!
 }
-
-input CategoryCreateInput {
-    name: String!
-    description: String!
-    products: [Int]
-}
-
-"Account of a person who utilizes this application."
 
 type Category {
     id: ID!
