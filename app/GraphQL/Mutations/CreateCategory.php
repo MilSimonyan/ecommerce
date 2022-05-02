@@ -11,9 +11,11 @@ use Illuminate\Validation\Factory;
 final class CreateCategory
 {
     protected $validator;
+
     public function __construct(
         Factory $validator
-    ){
+    )
+    {
         $this->validator = $validator;
     }
 
@@ -23,7 +25,7 @@ final class CreateCategory
      * @param $validator
      * @return Category
      */
-    public function __invoke($_, array $args, $validator) : Category
+    public function __invoke($_, array $args, $validator): Category
     {
         $this->validator->validate($args, [
             'name' => 'required|min:3|max:50',
@@ -35,8 +37,8 @@ final class CreateCategory
             'description' => $args['description'],
         ]);
 
-        if($product = Product::find(isset($args['products']))) {
-            $category->products()->attach($product);
+        if ($product = Product::find(isset($args['products']))) {
+            $category->products()->sync($product);
         }
 
         return $category;

@@ -9,8 +9,8 @@ use Illuminate\Validation\Factory;
 final class UpdateAttribute
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param null $_
+     * @param array{} $args
      */
 
     protected Factory $validator;
@@ -27,7 +27,7 @@ final class UpdateAttribute
             'type' => 'min:2',
         ]);
 
-        if($attribute = Attribute::find($args['id'])) {
+        if ($attribute = Attribute::find($args['id'])) {
             if (isset($args['name'])) {
                 $attribute->name = $args['name'];
             }
@@ -36,9 +36,8 @@ final class UpdateAttribute
                 $attribute->name = $args['type'];
             }
 
-            if($product = Product::find(isset($args['products'])))
-            {
-                $attribute->products()->attach($product);
+            if ($product = Product::find(isset($args['products']))) {
+                $attribute->products()->sync($product);
             }
             $attribute->save();
         }

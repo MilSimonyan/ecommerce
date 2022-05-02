@@ -33,7 +33,7 @@ final class CreateAttribute
         ]);
 
         if ($product = Product::find(isset($args['products']))) {
-            $attribute->products()->attach($product);
+            $attribute->products()->sync($product);
         }
 
         return $attribute;
