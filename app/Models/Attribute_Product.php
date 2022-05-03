@@ -9,7 +9,9 @@ class Attribute_Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'attribute_product';
+    protected $table = 'value';
+
+    public $values = [];
 
 
     protected $fillable = [

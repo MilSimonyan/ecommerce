@@ -38,8 +38,14 @@ final class CreateProduct
             $product->categories()->sync($category);
         }
 
-        if (isset($args['attributes']) && $attribute = Attribute::whereIn('id',$args['attributes'])->get()) {
-            $product->attributes()->sync($attribute);
+        if (isset($args['attributes']) && Attribute::find($args['attributes'])) {
+            $attributes = [];
+            $count = count($args['value']);
+            for ($i = 0; $i < $count; $i++) {
+                $attributes[$args['attributes'][$i]]['value'] = $args['value'][$i];
+            }
+
+            $product->attributes()->sync($attributes);
         }
 
         return $product;
