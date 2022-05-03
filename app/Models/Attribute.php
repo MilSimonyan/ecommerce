@@ -30,9 +30,12 @@ class Attribute extends Model
 {
     use HasFactory;
 
+    public $value;
+
+
     protected $fillable = [
-        'name',
-        'type',
+        'id',
+        'name'
     ];
 
     public function products(): BelongsToMany

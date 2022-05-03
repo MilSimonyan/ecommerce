@@ -3,8 +3,10 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Attribute;
+use App\Models\Attribute_Product;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Factory;
 
 final class CreateProduct
@@ -36,7 +38,7 @@ final class CreateProduct
             $product->categories()->sync($category);
         }
 
-        if (isset($args['attributes']) && $attribute = Attribute::find($args['attributes'])) {
+        if (isset($args['attributes']) && $attribute = Attribute::whereIn('id',$args['attributes'])->get()) {
             $product->attributes()->sync($attribute);
         }
 

@@ -23,13 +23,11 @@ final class CreateAttribute
     public function __invoke($_, array $args)
     {
         $this->validator->validate($args, [
-            'name' => 'required|min:2|max:30',
-            'type' => 'required|min:2|max:30',
+            'name' => 'required|min:2|max:30'
         ]);
 
         $attribute = Attribute::create([
-            'name' => $args['name'],
-            'type' => $args['type'],
+            'name' => $args['name']
         ]);
 
         if (isset($args['products']) && $product = Product::find($args['products'])) {
