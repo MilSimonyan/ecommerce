@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('category_id');
             $table->bigInteger('product_id');
-            $table->timestamps();
         });
     }
 
