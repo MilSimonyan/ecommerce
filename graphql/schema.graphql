@@ -14,9 +14,13 @@ type Mutation{
     updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
     deleteCategory(id: ID!) : Category!
 
-    createReview(description: String!,  product: Int): Review!
-    updateReview(id: ID! description: String): Review!
+    createReview(description: String!,  product: Int!): Review!
+    updateReview(id: ID!, description: String): Review!
     deleteReview(id: ID!): Review!
+
+    createRate(rating: Int!, product: Int!): Rate
+    updateRate(id: ID!, rating: Int): Rate!
+    deleteRate(id: ID!): Rate!
 }
 
 type Query {
