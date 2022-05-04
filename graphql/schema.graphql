@@ -2,17 +2,17 @@
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Mutation{
-    createProduct(name: String!, description: String! categories: [Int!], attributes: [Int], value: [String]): Product
-    updateProduct(id: ID!, name: String!, description: String!, categories: [Int!], attributes: [Int!]): Product!
+    createProduct(name: String!, description: String! categories: [Int!], attributes: [Int], value: [String]): Product!
+    updateProduct(id: ID!, name: String, description: String, categories: [Int], attributes: [Int]): Product!
     deleteProduct(id: ID!): Product!
 
-    createAttribute(input: AttributeCreateInput  @spread): Attribute
-    updateAttribute(input: AttributeUpdateInput @spread): Attribute
+    createAttribute(input: AttributeCreateInput  @spread): Attribute!
+    updateAttribute(input: AttributeUpdateInput @spread): Attribute!
     deleteAttribute(id: ID!): Attribute
 
-    createCategory(input: CategoryCreateInput  @spread) : Category
-    updateCategory(id: ID! name: String, description: String, products: [Int!]): Category
-    deleteCategory(id: ID!) : Category
+    createCategory(input: CategoryCreateInput  @spread) : Category!
+    updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
+    deleteCategory(id: ID!) : Category!
 }
 
 type Product{
@@ -34,7 +34,7 @@ input AttributeCreateInput {
 input AttributeUpdateInput{
     id: ID!
     name: String
-    products: [Int!]
+    products: [Int]
 }
 
 input CategoryCreateInput {
