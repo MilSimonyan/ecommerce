@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Rate
@@ -28,6 +29,12 @@ class Rate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'rating'
+        'count',
+        'sum'
     ];
+
+    public function products(): BelongsTo
+    {
+        return $this->BelongsTo(Product::class);
+    }
 }

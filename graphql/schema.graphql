@@ -18,8 +18,8 @@ type Mutation{
     updateReview(id: ID!, description: String): Review!
     deleteReview(id: ID!): Review!
 
-    createRate(rating: Int!, product: Int!): Rate
-    updateRate(id: ID!, rating: Int): Rate!
+    createRate(rating: Int!, product: Int!): Rate!
+    updateRate(id: ID!, rating: Int!): Rate!
     deleteRate(id: ID!): Rate!
 }
 
