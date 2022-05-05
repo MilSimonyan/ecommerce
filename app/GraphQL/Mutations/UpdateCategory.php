@@ -34,7 +34,7 @@ final class UpdateCategory
                 $category->name = $args['name'];
             }
             if (isset($args['description'])) {
-                $category->name = $args['description'];
+                $category->description = $args['description'];
             }
             if (isset($args['products']) && $product = Product::find($args['products'])) {
                 $category->products()->sync($product);

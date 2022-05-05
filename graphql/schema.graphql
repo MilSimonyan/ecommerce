@@ -13,17 +13,35 @@ type Mutation{
     createCategory(input: CategoryCreateInput  @spread) : Category!
     updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
     deleteCategory(id: ID!) : Category!
+
+    createReview(description: String!,  product: Int!): Review!
+    updateReview(id: ID!, description: String): Review!
+    deleteReview(id: ID!): Review!
+
+    createRate(rating: Int!, product: Int!): Rate
+    updateRate(id: ID!, rating: Int): Rate!
+    deleteRate(id: ID!): Rate!
 }
 
-type Product{
-    id: ID!
+type Query {
+    #    Find category, attribute
+    project(id:ID! @eq): Product @find
+    category(id: ID! @eq): Category @find
+    attribute(id: ID! @eq): Attribute @find
+    review(id: ID! @eq): Review @find
+
+
+    #    All categories, attributes
+    products: [Product!]
+    categories: [Category!]
+    attributes: [Attribute!]
+    reviews: [Review]!
+}
+
+input CategoryCreateInput {
     name: String!
     description: String!
-}
-
-type Attribute {
-    id: ID!
-    name: String!
+    products: [Int!]
 }
 
 input AttributeCreateInput {
@@ -35,12 +53,6 @@ input AttributeUpdateInput{
     id: ID!
     name: String
     products: [Int]
-}
-
-input CategoryCreateInput {
-    name: String!
-    description: String!
-    products: [Int!]
 }
 
 type Query {
@@ -57,6 +69,17 @@ type Query {
     rates(product_id:ID!): Int!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
+type Attribute {
+    id: ID!
+    name: String!
+}
+
+type Product{
+    id: ID!
+    name: String!
+    description: String!
+}
+
 type DeleteCategoryResponse {
     status: String!
     message: String!
@@ -68,3 +91,12 @@ type Category {
     description: String!
 }
 
+type Rate {
+    id: ID!
+    rating: Int!
+}
+
+type Review {
+    id: ID!
+    description: String!
+}
