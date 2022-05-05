@@ -22,7 +22,7 @@ final class Rate
      */
     public function getAvg($_, array $args): float
     {
-        return ModelRate::where('product_id', $args['product_id'])->get()->avg('rating');
+        return round(ModelRate::where('product_id', $args['product_id'])->get()->avg('rating'),1);
     }
 
     /**

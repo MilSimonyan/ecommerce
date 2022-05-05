@@ -60,13 +60,13 @@ type Query {
     project(id:ID! @eq): Product @find
     category(id: ID! @eq): Category @find
     attribute(id: ID! @eq): Attribute @find
-    rate(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
+    rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
 
     #    All categories, attributes
     products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
-    rates(product_id:ID!): Int!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
+    rates(product_id:ID!): Float!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
 type Attribute {
