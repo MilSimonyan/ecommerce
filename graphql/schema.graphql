@@ -93,7 +93,7 @@ type Category {
 
 type Rate {
     id: ID!
-    rating: Int!
+    rating: Float!
 }
 
 type Review {

@@ -23,6 +23,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $count
+ * @property int $sum
+ * @property-read \App\Models\Product|null $products
+ * @method static \Illuminate\Database\Eloquent\Builder|Rate whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rate whereSum($value)
  */
 class Rate extends Model
 {
@@ -30,7 +35,8 @@ class Rate extends Model
 
     protected $fillable = [
         'count',
-        'sum'
+        'sum',
+        'rating'
     ];
 
     public function products(): BelongsTo

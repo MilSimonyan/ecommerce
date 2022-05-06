@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read int|null $attributes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Rate[] $rates
  * @property-read int|null $rates_count
+ * @property-read \App\Models\Rate|null $rate
  */
 class Product extends Model
 {
