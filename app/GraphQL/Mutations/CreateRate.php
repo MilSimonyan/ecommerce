@@ -31,7 +31,7 @@ final class CreateRate
     public function __invoke($_, array $args): Rate
     {
         $this->validation->validate($args, [
-            'rating' => 'min:1|max:5'
+            'rating' => 'numeric|min:1|max:5'
         ]);
 
         $rate = Product::find($args['product'])->rate();
@@ -46,7 +46,6 @@ final class CreateRate
 
         $rateModel = Rate::where('product_id', $args['product'])->first();
         $rateModel->rating = round($sum / $count, 1);
-
         return $rateModel;
     }
 }
