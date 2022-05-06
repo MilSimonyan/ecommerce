@@ -7,8 +7,9 @@ use App\Models\Review;
 final class DeleteReview
 {
     /**
-     * @param null $_
-     * @param array{} $args
+     * @param $_
+     * @param array $args
+     * @return Review|Review[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed|null
      */
     public function __invoke($_, array $args)
     {

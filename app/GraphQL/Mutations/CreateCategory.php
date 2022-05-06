@@ -10,20 +10,25 @@ use Illuminate\Validation\Factory;
 
 final class CreateCategory
 {
+    /**
+     * @var Factory
+     */
     protected Factory $validator;
 
-    public function __construct(
-        Factory $validator
-    )
+    /**
+     * @param Factory $validator
+     */
+    public function __construct(Factory $validator)
     {
         $this->validator = $validator;
     }
 
     /**
-     * @param null $_
-     * @param array{} $args
+     * @param $_
+     * @param array $args
      * @param $validator
      * @return Category
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke($_, array $args, $validator): Category
     {

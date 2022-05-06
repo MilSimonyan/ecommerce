@@ -7,16 +7,24 @@ use Illuminate\Validation\Factory;
 
 final class UpdateReview
 {
+    /**
+     * @var Factory
+     */
     protected Factory $validation;
 
+    /**
+     * @param Factory $validation
+     */
     public function __construct(Factory $validation)
     {
         $this->validation = $validation;
     }
 
     /**
-     * @param null $_
-     * @param array{} $args
+     * @param $_
+     * @param array $args
+     * @return Review|Review[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed|null
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke($_, array $args)
     {
@@ -25,6 +33,7 @@ final class UpdateReview
         ]);
 
         if ($review = Review::find($args['id'])) {
+
             if (!empty($args['description'])) {
                 $review->update([
                     'description' => $args['description']
@@ -33,6 +42,7 @@ final class UpdateReview
                 $review->delete();
             }
         }
+
         return $review;
     }
 }

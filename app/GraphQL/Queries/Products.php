@@ -6,11 +6,10 @@ use App\Models\Product;
 
 final class Products
 {
-
-
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param $_
+     * @param array $args
+     * @return \Illuminate\Database\Eloquent\Collection
      */
         public function __invoke($_, array $args)
     {

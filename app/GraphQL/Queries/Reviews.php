@@ -7,8 +7,9 @@ use App\Models\Review;
 final class Reviews
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param $_
+     * @param array $args
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function __invoke($_, array $args)
     {

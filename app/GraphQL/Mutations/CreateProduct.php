@@ -5,21 +5,28 @@ namespace App\GraphQL\Mutations;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Factory;
 
 final class CreateProduct
 {
+    /**
+     * @var Factory
+     */
     public Factory $validation;
 
+    /**
+     * @param Factory $validation
+     */
     public function __construct(Factory $validation)
     {
         $this->validation = $validation;
     }
 
     /**
-     * @param null $_
-     * @param array{} $args
+     * @param $_
+     * @param array $args
+     * @return Product
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke($_, array $args): Product
     {
@@ -40,6 +47,7 @@ final class CreateProduct
         if (isset($args['attributes']) && Attribute::find($args['attributes'])) {
             $attributes = [];
             $count = count($args['value']);
+
             for ($i = 0; $i < $count; $i++) {
                 $attributes[$args['attributes'][$i]]['value'] = $args['value'][$i];
             }

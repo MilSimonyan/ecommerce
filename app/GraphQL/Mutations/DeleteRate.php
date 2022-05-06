@@ -7,8 +7,9 @@ use App\Models\Rate;
 final class DeleteRate
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param $_
+     * @param array $args
+     * @return Rate|Rate[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed|null
      */
     public function __invoke($_, array $args)
     {

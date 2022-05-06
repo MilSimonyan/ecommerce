@@ -24,18 +24,20 @@ type Mutation{
 }
 
 type Query {
+
     #    Find category, attribute
     project(id:ID! @eq): Product @find
     category(id: ID! @eq): Category @find
     attribute(id: ID! @eq): Attribute @find
     review(id: ID! @eq): Review @find
-
+    rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
 
     #    All categories, attributes
     products: [Product!]
     categories: [Category!]
     attributes: [Attribute!]
     reviews: [Review]!
+    rates(product_id:ID!): Float!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
 input CategoryCreateInput {
@@ -53,20 +55,6 @@ input AttributeUpdateInput{
     id: ID!
     name: String
     products: [Int]
-}
-
-type Query {
-    #    Find category, attribute
-    project(id:ID! @eq): Product @find
-    category(id: ID! @eq): Category @find
-    attribute(id: ID! @eq): Attribute @find
-    rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
-
-    #    All categories, attributes
-    products: [Product!]
-    categories: [Category!]
-    attributes: [Attribute!]
-    rates(product_id:ID!): Float!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
 type Attribute {

@@ -8,8 +8,9 @@ use function PHPUnit\Framework\isNull;
 final class DeleteCategory
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param $_
+     * @param array $args
+     * @return Category|null
      */
     public function __invoke($_, array $args): ?Category
     {
@@ -18,7 +19,6 @@ final class DeleteCategory
         }
 
         return $category;
-
     }
 
 }

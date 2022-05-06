@@ -9,17 +9,24 @@ use Illuminate\Validation\Factory;
 final class CreateAttribute
 {
     /**
-     * @param null $_
-     * @param array{} $args
+     * @var Factory
      */
-
     protected Factory $validator;
 
+    /**
+     * @param Factory $validator
+     */
     public function __construct(Factory $validator)
     {
         $this->validator = $validator;
     }
 
+    /**
+     * @param $_
+     * @param array $args
+     * @return Attribute|\Illuminate\Database\Eloquent\Model
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function __invoke($_, array $args)
     {
         $this->validator->validate($args, [

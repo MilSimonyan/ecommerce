@@ -8,16 +8,24 @@ use Illuminate\Validation\Factory;
 
 final class CreateReview
 {
+    /**
+     * @var Factory
+     */
     protected Factory $validation;
 
+    /**
+     * @param Factory $validation
+     */
     public function __construct(Factory $validation)
     {
         $this->validation = $validation;
     }
 
     /**
-     * @param null $_
-     * @param array{} $args
+     * @param $_
+     * @param array $args
+     * @return Review|\Illuminate\Database\Eloquent\Model
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke($_, array $args)
     {

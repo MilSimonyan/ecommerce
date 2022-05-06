@@ -10,17 +10,24 @@ use Illuminate\Validation\Factory;
 final class CreateRate
 {
     /**
-     * @param null $_
-     * @param array{} $args
+     * @var Factory
      */
-
     protected Factory $validation;
 
+    /**
+     * @param Factory $validation
+     */
     public function __construct(Factory $validation)
     {
         $this->validation = $validation;
     }
 
+    /**
+     * @param $_
+     * @param array $args
+     * @return Rate
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function __invoke($_, array $args): Rate
     {
         $this->validation->validate($args, [
@@ -28,15 +35,18 @@ final class CreateRate
         ]);
 
         $rate = Product::find($args['product'])->rate();
+
         $count = $rate->value('count') ?: 0;
         $sum = $rate->value('sum') ?: 0;
+
         $rate->updateOrCreate(['product_id' => $args['product']], [
             'count' => ++$count,
             'sum' => $sum += $args['rating']
         ]);
+
         $rateModel = Rate::where('product_id', $args['product'])->first();
         $rateModel->rating = round($sum / $count, 1);
-        return $rateModel;
 
+        return $rateModel;
     }
 }

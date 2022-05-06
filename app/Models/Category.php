@@ -33,13 +33,19 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class);
-    }
-
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
     ];
+
+    /**
+     * @return BelongsToMany
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }

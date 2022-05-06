@@ -33,12 +33,18 @@ class Rate extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'count',
         'sum',
         'rating'
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function products(): BelongsTo
     {
         return $this->BelongsTo(Product::class);

@@ -38,22 +38,34 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'id',
         'name',
         'description',
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class);
     }
 
+    /**
+     * @return HasOne
+     */
     public function rate(): HasOne
     {
         return $this->HasOne(Rate::class);

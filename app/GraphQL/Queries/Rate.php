@@ -7,15 +7,6 @@ use App\Models\Rate as ModelRate;
 final class Rate
 {
     /**
-     * @param null $_
-     * @param array{} $args
-     */
-    public function __invoke()
-    {
-
-    }
-
-    /**
      * @param $_
      * @param array $args
      * @return float

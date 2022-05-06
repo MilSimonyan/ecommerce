@@ -30,14 +30,22 @@ class Attribute extends Model
 {
     use HasFactory;
 
+    /**
+     * @var
+     */
     public $value;
 
-
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'id',
         'name'
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
