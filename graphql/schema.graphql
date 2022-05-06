@@ -19,7 +19,6 @@ type Mutation{
     deleteReview(id: ID!): Review!
 
     createRate(rating: Int!, product: Int!): Rate!
-    updateRate(id: ID!, rating: Int!): Rate!
     deleteRate(id: ID!): Rate!
 }
 
