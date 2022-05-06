@@ -13,9 +13,10 @@ final class UpdateReview
     {
         $this->validation = $validation;
     }
+
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param null $_
+     * @param array{} $args
      */
     public function __invoke($_, array $args)
     {
@@ -23,12 +24,14 @@ final class UpdateReview
             'description' => 'min:5|max:500'
         ]);
 
-        if($review = Review::find($args['id']))
-        {
-            if (isset($args['description'])) {
-                $review->description = $args['description'];
+        if ($review = Review::find($args['id'])) {
+            if (!empty($args['description'])) {
+                $review->update([
+                    'description' => $args['description']
+                ]);
+            } else {
+                $review->delete();
             }
-            $review->save();
         }
         return $review;
     }

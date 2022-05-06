@@ -32,11 +32,7 @@ final class UpdateAttribute
                 $attribute->name = $args['name'];
             }
 
-            if (isset($args['type'])) {
-                $attribute->name = $args['type'];
-            }
-
-            if (isset($args['products']) && $product = Product::find($args['products'])) {
+            if ($product = Product::find($args['products'])) {
                 $attribute->products()->sync($product);
             }
             $attribute->save();

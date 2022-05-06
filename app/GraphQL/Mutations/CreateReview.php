@@ -16,8 +16,8 @@ final class CreateReview
     }
 
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param null $_
+     * @param array{} $args
      */
     public function __invoke($_, array $args)
     {
@@ -25,12 +25,9 @@ final class CreateReview
             'description' => 'min:5|max:500'
         ]);
 
-        if (isset($args['product']) && $product = Product::find($args['product'])) {
-            $review = Review::create([
-                'description' => $args['description'],
-                'product_id' => $args['product']
-            ]);
-            return $review;
-        }
+        return Review::create([
+            'description' => $args['description'],
+            'product_id' => $args['product']
+        ]);
     }
 }

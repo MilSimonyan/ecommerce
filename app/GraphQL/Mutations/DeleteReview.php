@@ -7,12 +7,12 @@ use App\Models\Review;
 final class DeleteReview
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param null $_
+     * @param array{} $args
      */
     public function __invoke($_, array $args)
     {
-        if($review = Review::find($args['id'])) {
+        if ($review = Review::find($args['id'])) {
             $review->delete();
         }
 
