@@ -8,7 +8,7 @@ use Illuminate\Validation\Factory;
 
 final class CreateReview
 {
-    protected $validation;
+    protected Factory $validation;
 
     public function __construct(Factory $validation)
     {

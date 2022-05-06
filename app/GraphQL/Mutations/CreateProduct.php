@@ -10,7 +10,7 @@ use Illuminate\Validation\Factory;
 
 final class CreateProduct
 {
-    public $validation;
+    public Factory $validation;
 
     public function __construct(Factory $validation)
     {

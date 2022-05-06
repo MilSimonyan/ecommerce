@@ -9,7 +9,7 @@ use Illuminate\Validation\Factory;
 
 final class UpdateProduct
 {
-    protected $validation;
+    protected Factory $validation;
 
     public function __construct(Factory $validation)
     {

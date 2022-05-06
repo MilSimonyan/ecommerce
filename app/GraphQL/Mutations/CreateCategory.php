@@ -10,7 +10,7 @@ use Illuminate\Validation\Factory;
 
 final class CreateCategory
 {
-    protected $validator;
+    protected Factory $validator;
 
     public function __construct(
         Factory $validator
