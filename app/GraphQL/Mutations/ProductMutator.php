@@ -82,7 +82,7 @@ final class ProductMutator
             $product->name = $args['name'];
         }
 
-        if (isset($args['name'])) {
+        if (isset($args['description'])) {
             $product->description = $args['description'];
         }
 
