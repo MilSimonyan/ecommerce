@@ -1,0 +1,46 @@
+extend type Mutation{
+    createProduct(
+        input: CreateProductInput @spread
+    ):
+    Product! @field(resolver:  "App\\GraphQL\\Mutations\\ProductMutator@create")
+    updateProduct(
+         input: UpdateProductInput @spread
+    ):
+    Product! @field(resolver: "App\\GraphQL\\Mutations\\ProductMutator@update")
+    deleteProduct(
+         id: ID!
+    ):
+    Boolean! @field(resolver: "App\\GraphQL\\Mutations\\ProductMutator@delete")
+}
+
+input CreateProductInput {
+    name:        String!,
+    description: String!,
+    categories:  [Int!],
+    attributes:  [Int],
+    values:      [String]
+}
+
+input UpdateProductInput {
+    id:          ID!,
+    name:        String,
+    description: String,
+    categories:  [Int],
+    attributes:  [Int],
+    values:      [String]
+}
+
+extend type Query {
+    product(
+        id:ID! @eq
+    ):
+    Product @find
+    products:
+    [Product!] @field(resolver: "App\\GraphQL\\Queries\\ProductQuery@getAll")
+}
+
+type Product{
+    id:          ID!
+    name:        String!
+    description: String!
+}
