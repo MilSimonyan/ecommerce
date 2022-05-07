@@ -1,0 +1,30 @@
+
+type Query {
+    # find Attribute
+    attribute(id: ID! @eq): Attribute @find
+
+    # all Attributes
+    attributes: [Attribute!]
+}
+
+type Mutation {
+    createAttribute(input: AttributeCreateInput  @spread): Attribute!
+    updateAttribute(input: AttributeUpdateInput @spread): Attribute!
+    deleteAttribute(id: ID!): Attribute
+}
+
+input AttributeCreateInput {
+    name: String!
+    products: [Int!]
+}
+
+input AttributeUpdateInput{
+    id: ID!
+    name: String
+    products: [Int]
+}
+
+type Attribute {
+    id: ID!
+    name: String!
+}

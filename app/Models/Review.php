@@ -31,6 +31,14 @@ class Review extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = [
+        "description",
+        'product_id'
+    ];
+
+    /**
      * @return BelongsTo
      */
     public function products(): BelongsTo

@@ -1,51 +1,11 @@
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
 type Query
 
 type Mutation
+
 #import ./product.graphql
-
-
-input CategoryCreateInput {
-    name: String!
-    description: String!
-    products: [Int!]
-}
-
-input AttributeCreateInput {
-    name: String!
-    products: [Int!]
-}
-
-input AttributeUpdateInput{
-    id: ID!
-    name: String
-    products: [Int]
-}
-
-type Attribute {
-    id: ID!
-    name: String!
-}
-
-type DeleteCategoryResponse {
-    status: String!
-    message: String!
-}
-
-type Category {
-    id: ID!
-    name: String!
-    description: String!
-}
-
-type Rate {
-    id: ID!
-    rating: Float!
-}
-
-type Review {
-    id: ID!
-    description: String!
-}
+#import rate.graphql
+#import rev.graphql
+#import scalars.graphql
+#import category.graphql
+#import attribute.graphql
+#import product.graphql

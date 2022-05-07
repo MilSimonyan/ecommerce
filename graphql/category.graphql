@@ -1,0 +1,27 @@
+
+type Query {
+    #    Find category, attribute
+    category(id: ID! @eq): Category @find
+
+    #    All categories, attributes
+    categories: [Category!]
+}
+
+type Mutation {
+    createCategory(input: CategoryCreateInput  @spread) : Category!
+    updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
+    deleteCategory(id: ID!) : Category!
+}
+
+
+input CategoryCreateInput {
+    name: String!
+    description: String!
+    products: [Int!]
+}
+
+type Category {
+    id: ID!
+    name: String!
+    description: String!
+}

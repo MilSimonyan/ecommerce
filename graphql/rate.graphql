@@ -1,0 +1,19 @@
+type Mutation{
+    createRate(rating: Int!, product: Int!): Rate!
+    deleteRate(id: ID!): Rate!
+}
+
+type Query {
+
+    # Find Rate
+    rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
+
+    # All rates
+    rates(product_id:ID!): Float!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
+}
+
+type Rate {
+    id: ID!
+    rating: Float!
+}
+

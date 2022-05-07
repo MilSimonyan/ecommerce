@@ -33,9 +33,12 @@ final class CreateReview
             'description' => 'min:5|max:500'
         ]);
 
-        return Review::create([
-            'description' => $args['description'],
-            'product_id' => $args['product']
-        ]);
+        if (isset($args['product']) && $product = Product::find($args['product'])) {
+            $review = Review::create([
+                'description' => $args['description'],
+                'product_id' => $args['product']
+            ]);
+            return $review;
+        }
     }
 }
