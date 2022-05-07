@@ -1,0 +1,20 @@
+type Mutation {
+    createProduct(name: String!, description: String! categories: [Int!], attributes: [Int], value: [String]): Product!
+    updateProduct(id: ID!, name: String, description: String, categories: [Int], attributes: [Int]): Product!
+    deleteProduct(id: ID!): Product!
+}
+
+type Query {
+    # find product
+    product(id:ID! @eq): Product @find
+
+    # all products
+    products: [Product!]
+}
+
+type Product{
+    id: ID!
+    name: String!
+    description: String!
+}
+
