@@ -1,9 +1,9 @@
-type Mutation{
+extend type Mutation{
     createRate(rating: Int!, product: Int!): Rate!
     deleteRate(id: ID!): Rate!
 }
 
-type Query {
+extend type Query {
 
     # Find Rate
     rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")

@@ -1,10 +1,10 @@
-type Mutation{
+extend type Mutation{
     createReview(description: String!,  product: Int!): Review!
     updateReview(id: ID!, description: String): Review!
     deleteReview(id: ID!): Review!
 }
 
-type Query {
+extend type Query {
     #find Review
     review(id: ID! @eq): Review @find
 

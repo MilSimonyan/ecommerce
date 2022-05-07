@@ -1,5 +1,4 @@
-
-type Query {
+extend type Query {
     #    Find category, attribute
     category(id: ID! @eq): Category @find
 
@@ -7,12 +6,11 @@ type Query {
     categories: [Category!]
 }
 
-type Mutation {
+extend type Mutation {
     createCategory(input: CategoryCreateInput  @spread) : Category!
     updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
     deleteCategory(id: ID!) : Category!
 }
-
 
 input CategoryCreateInput {
     name: String!

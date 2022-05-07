@@ -3,9 +3,8 @@ type Query
 type Mutation
 
 #import ./product.graphql
-#import rate.graphql
-#import rev.graphql
-#import scalars.graphql
-#import category.graphql
-#import attribute.graphql
-#import product.graphql
+#import ./rate.graphql
+#import ./review.graphql
+#import ./scalars.graphql
+#import ./category.graphql
+#import ./attribute.graphql

@@ -1,5 +1,4 @@
-
-type Query {
+extend type Query {
     # find Attribute
     attribute(id: ID! @eq): Attribute @find
 
@@ -7,7 +6,7 @@ type Query {
     attributes: [Attribute!]
 }
 
-type Mutation {
+extend type Mutation {
     createAttribute(input: AttributeCreateInput  @spread): Attribute!
     updateAttribute(input: AttributeUpdateInput @spread): Attribute!
     deleteAttribute(id: ID!): Attribute
