@@ -1,21 +1,31 @@
+
+extend type Mutation {
+    createCategory(input: CategoryCreateInput  @spread) : Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@storeCategory")
+    updateCategory(input: CategoryUpdateInput @spread): Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@updatecategory")
+    deleteCategory(id: ID!) : Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@deleteCategory")
+}
+
+
 extend type Query {
     #    Find category, attribute
     category(id: ID! @eq): Category @find
 
     #    All categories, attributes
-    categories: [Category!]
+    categories: [Category!]  @field(resolver: "App\\GraphQL\\Queries\\CategoryQuery@getAllCategories")
 }
 
-extend type Mutation {
-    createCategory(input: CategoryCreateInput  @spread) : Category!
-    updateCategory(id: ID! name: String, description: String, products: [Int]): Category!
-    deleteCategory(id: ID!) : Category!
-}
 
 input CategoryCreateInput {
     name: String!
     description: String!
     products: [Int!]
+}
+
+input  CategoryUpdateInput {
+    id: ID!
+    name: String
+    description: String
+    products: [Int]
 }
 
 type Category {
