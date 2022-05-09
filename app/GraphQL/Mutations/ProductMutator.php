@@ -42,6 +42,7 @@ final class ProductMutator
         $product = new Product();
         $product->name = $args['name'];
         $product->description = $args['description'];
+        $product->save();
 
         if (isset($args['categories']) && $category = Category::find($args['categories'])) {
             $product->categories()->sync($category);
@@ -57,8 +58,6 @@ final class ProductMutator
 
             $product->attributes()->sync($attributes);
         }
-
-        $product->save();
 
         return $product;
     }
