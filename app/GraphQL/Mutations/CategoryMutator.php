@@ -41,12 +41,11 @@ final class CategoryMutator
         $category = new Category();
         $category->name = $args['name'];
         $category->description = $args['description'];
+        $category->save();
 
         if (isset($args['products']) && $product = Product::find($args['products'])) {
             $category->products()->sync($product);
         }
-
-        $category->save();
 
         return $category;
     }
