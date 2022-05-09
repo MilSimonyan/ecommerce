@@ -39,10 +39,9 @@ final class ProductMutator
             'description' => 'min:5|max:500'
         ]);
 
-        $product = Product::create([
-            'name' => $args['name'],
-            'description' => $args['description']
-        ]);
+        $product = new Product();
+        $product->name = $args['name'];
+        $product->description = $args['description'];
 
         if (isset($args['categories']) && $category = Category::find($args['categories'])) {
             $product->categories()->sync($category);
@@ -58,6 +57,8 @@ final class ProductMutator
 
             $product->attributes()->sync($attributes);
         }
+
+        $product->save();
 
         return $product;
     }
