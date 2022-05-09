@@ -4,6 +4,7 @@ extend type Query {
 
     # all Attributes
     attributes: [Attribute!]
+    @field(resolver: "App\\GraphQL\\Queries\\AttributeQuery@getAll")
 }
 
 extend type Mutation {
