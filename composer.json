@@ -11,7 +11,9 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "mll-lab/laravel-graphql-playground": "^2.6",
-        "nuwave/lighthouse": "^5.48"
+        "nuwave/lighthouse": "^5.48",
+        "tymon/jwt-auth": "*",
+      "ext-http": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
