@@ -4,23 +4,27 @@ extend type Query {
 
     # all Attributes
     attributes: [Attribute!]
+    @field(resolver: "App\\GraphQL\\Queries\\AttributeQuery@getAll")
 }
 
 extend type Mutation {
     createAttribute(input: AttributeCreateInput  @spread): Attribute!
+    @field(resolver: "App\\GraphQL\\Mutations\\AttributeMutator@store")
+
     updateAttribute(input: AttributeUpdateInput @spread): Attribute!
-    deleteAttribute(id: ID!): Attribute
+    @field(resolver: "App\\GraphQL\\Mutations\\AttributeMutator@update")
+
+    deleteAttribute(id: ID!): Boolean!
+    @field(resolver: "App\\GraphQL\\Mutations\\AttributeMutator@destroy")
 }
 
 input AttributeCreateInput {
     name: String!
-    products: [Int!]
 }
 
 input AttributeUpdateInput{
     id: ID!
-    name: String
-    products: [Int]
+    name: String!
 }
 
 type Attribute {
