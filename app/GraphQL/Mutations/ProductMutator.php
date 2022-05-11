@@ -40,6 +40,7 @@ final class ProductMutator
         ]);
 
         $product = new Product();
+        $product->user_id = $args['user_id'];
         $product->name = $args['name'];
         $product->description = $args['description'];
         $product->save();

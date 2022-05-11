@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
  * @property-read int|null $reviews_count
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereUserId($value)
  */
 class Product extends Model
 {
@@ -45,6 +47,7 @@ class Product extends Model
      * @var string[]
      */
     protected $fillable = [
+        'user_id',
         'name',
         'description',
     ];

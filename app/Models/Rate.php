@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Product|null $products
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereSum($value)
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Rate whereUserId($value)
  */
 class Rate extends Model
 {
