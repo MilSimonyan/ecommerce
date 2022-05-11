@@ -1,6 +1,6 @@
 extend type Mutation{
     createProduct(
-        input: CreateProductInput @spread
+         input: CreateProductInput @spread
     ):
     Product! @field(resolver:  "App\\GraphQL\\Mutations\\ProductMutator@create")
     updateProduct(
@@ -15,14 +15,15 @@ extend type Mutation{
 
 extend type Query {
     product(
-        id:ID! @eq
+        user_id: Int!
     ):
-    Product @find
+    [Product!] @field(resolver: "App\\GraphQL\\Queries\\ProductQuery@getUserProducts")
     products:
     [Product!] @field(resolver: "App\\GraphQL\\Queries\\ProductQuery@getAll")
 }
 
 input CreateProductInput {
+    user_id:     Int!,
     name:        String!,
     description: String!,
     categories:  [Int!],

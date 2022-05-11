@@ -18,4 +18,9 @@ final class ProductQuery
     {
         return Product::all();
     }
+
+    public function getUserProducts(?ObjectType $rootValue, array $args, GraphQLContext $context)
+    {
+        return Product::whereUserId($args['user_id'])->get();
+    }
 }
