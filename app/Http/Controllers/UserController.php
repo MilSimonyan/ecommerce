@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Sender;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -83,5 +86,18 @@ class UserController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+
+    public function sendMail(Request $request)
+    {
+        Mail::to($request->email)->send(new Sender(env('MAIL_USERNAME')));
+        return new JsonResponse(
+            [
+                'success' => true,
+                'message' => "Thank you for subscribing to our email, please check your inbox"
+            ],
+            200
+        );
     }
 }

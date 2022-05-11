@@ -21,6 +21,7 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/refresh', [UserController::class, 'refresh']);
     Route::post('/profile', [UserController::class, 'profile']);
+    Route::post('/send', [UserController::class, 'sendMail']);
 });
 
 
