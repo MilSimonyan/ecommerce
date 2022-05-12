@@ -2,6 +2,15 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
+=======
+use App\Mail\Sender;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+>>>>>>> b822abfa06a9fa94c71eb84139d30dbb005a7c84
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,7 +21,7 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse|void
      */
     public function register(Request $request)
     {
@@ -26,16 +35,13 @@ class UserController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $details = [
+            'email=' . $request->email ,
+            'password=' . Hash::make($request->password),
+            'name=' . $request->name
+        ];
 
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
+        $this->sendMail($details, $request->email);
     }
 
     /**
@@ -84,5 +90,31 @@ class UserController extends Controller
             'token_type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+
+    public function sendMail($token , $email)
+    {
+        $details = [
+            'title' => 'verify mail',
+            'body' => 'http://127.0.0.1:8000/api/verify?' . implode('&',$token)
+        ];
+
+        Mail::to($email)->send(new Sender($details));
+        return "aaa";
+    }
+
+    public function verification(Request $request)
+    {
+        $user = new User();
+        $details = $request->toArray();
+        $user->name = $details['name'];
+        $user->email = $details['email'];
+        $user->password = $details['password'];
+        $user->save();
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
     }
 }

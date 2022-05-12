@@ -39,7 +39,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @mixin \Eloquent
  * @property-read \App\Models\Rate|null $rates
  */
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
