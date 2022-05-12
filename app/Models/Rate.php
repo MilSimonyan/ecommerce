@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Rate
@@ -30,6 +31,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereSum($value)
  * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|Rate whereUserId($value)
+ * @property int $rate
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Rate whereRate($value)
+ * @property-read \App\Models\Product $product
  */
 class Rate extends Model
 {
@@ -39,16 +44,22 @@ class Rate extends Model
      * @var string[]
      */
     protected $fillable = [
-        'count',
-        'sum',
-        'rating'
+        'rate',
+        'user_id',
+        'product_id',
+        'rating',
     ];
 
     /**
      * @return BelongsTo
      */
-    public function products(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->BelongsTo(Product::class);
+        return $this->belongsTo(Product::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

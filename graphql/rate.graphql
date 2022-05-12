@@ -1,9 +1,12 @@
 extend type Mutation{
     createRate(input: RateCreateInput  @spread): Rate!
-    @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@store")
+    @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@storeRate")
+
+    updateRate(input: RateUpdateInput @spread): Rate!
+    @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@updateRate")
 
     deleteRate(id: ID!): Boolean!
-    @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@destroy")
+    @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@deleteRate")
 }
 
 extend type Query {
@@ -12,17 +15,26 @@ extend type Query {
     rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
 
     # All rates
-    rates(product_id:ID!): Float!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
+    rates(product_id:ID!): myRate!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
 input RateCreateInput{
-    user_id: Int!
-    rating: Int!
+    user: Int!
+    rate: Int!
     product: Int!
+}
+
+input RateUpdateInput {
+    user: ID!
+    product: ID!
+    rate: Int!
 }
 
 type Rate {
     id: ID!
-    rating: Float!
+    rate: Int
+    product_id: Int
+    rateAVG: Float!
 }
+
 

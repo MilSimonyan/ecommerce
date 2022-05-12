@@ -3,35 +3,31 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Attribute;
-use App\Models\Product;
+use App\Repositories\AttributeRepository;
 use GraphQL\Type\Definition\ObjectType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class AttributeMutator
 {
     /**
-     * @var Attribute
-     */
-
-    protected Attribute $attribute;
-
-    /**
      * @var Factory
      */
-
     protected Factory $validator;
+
+    /**
+     * @var AttributeRepository
+     */
+    protected AttributeRepository $attributeRepository;
 
     /**
      * @param Factory $validator
      * @param Attribute $attribute
      */
-
-    public function __construct(Factory $validator, Attribute $attribute)
+    public function __construct(Factory $validator, AttributeRepository $attributeRepository)
     {
         $this->validator = $validator;
-        $this->attribute = $attribute;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -41,17 +37,17 @@ final class AttributeMutator
      * @return Attribute
      * @throws \Illuminate\Validation\ValidationException
      */
-
     public function store(?ObjectType $rootValue, array $args, GraphQLContext $context): Attribute
     {
         $this->validator->validate($args, [
             'name' => 'required|min:2|max:30'
         ]);
 
-        $this->attribute->name = $args['name'];
-        $this->attribute->save();
+        $attribute = new Attribute();
+        $attribute->name = $args['name'];
+        $attribute->save();
 
-        return $this->attribute;
+        return $attribute;
     }
 
     /**
@@ -61,14 +57,13 @@ final class AttributeMutator
      * @return Attribute
      * @throws \Illuminate\Validation\ValidationException
      */
-
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Attribute
     {
         $this->validator->validate($args, [
             'name' => 'required|min:2|max:30'
         ]);
 
-        $attribute = $this->attribute->find($args['id']);
+        $attribute = $this->attributeRepository->find($args['id']);
         $attribute->update([
             'id' => $args['id'],
             'name' => $args['name']
@@ -84,10 +79,9 @@ final class AttributeMutator
      * @param GraphQLContext $context
      * @return void
      */
-
     public function destroy(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-        if($attribute = $this->attribute->find($args['id'])){
+        if ($attribute = $this->attribute->find($args['id'])) {
             $attribute->delete();
             return true;
         }

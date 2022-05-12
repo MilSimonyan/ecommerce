@@ -69,11 +69,11 @@ class Product extends Model
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      */
-    public function rate(): HasOne
+    public function rates(): HasMany
     {
-        return $this->HasOne(Rate::class);
+        return $this->hasMany(Rate::class);
     }
 
     public function reviews(): HasMany

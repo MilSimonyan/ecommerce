@@ -37,6 +37,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Rate|null $rates
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -80,5 +81,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function rates()
+    {
+        return $this->hasOne(Rate::class);
     }
 }

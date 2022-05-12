@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -46,16 +45,12 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        if (!$token = auth()->attempt($validator->validated())) {
+        if (!$token = auth()->attempt($request->all())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -72,6 +67,12 @@ class UserController extends Controller
         return response()->json(['message' => 'User successfully logged out.']);
     }
 
+
+    public function profile()
+    {
+        return response()->json(auth()->user());
+    }
+
     /**
      * @param $token
      * @return \Illuminate\Http\JsonResponse
@@ -80,7 +81,7 @@ class UserController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }

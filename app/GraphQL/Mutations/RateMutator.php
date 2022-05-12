@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\Product;
 use App\Models\Rate;
+use App\Models\User;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -33,28 +34,46 @@ final class RateMutator
         $this->rate = $rate;
     }
 
-    public function store(?ObjectType $rootValue, array $args, GraphQLContext $context): Rate
+    public function storeRate(?ObjectType $rootValue, array $args, GraphQLContext $context): float
     {
         $this->validator->validate($args, [
-            'rating' => 'numeric|min:1|max:5'
+            'rate' => 'numeric|min:1|max:5'
         ]);
+        $rate = new Rate();
+        $rate->rate = $args['rate'];
 
-        $rate = Product::find($args['product'])->rate();
+        $user = User::find($args['user']);
+        $product = Product::find($args['product']);
 
-        $count = $rate->value('count') ?: 0;
-        $sum = $rate->value('sum') ?: 0;
+        $rate->user()->associate($user);
+        $rate->product()->associate($product);
 
-        $rate->updateOrCreate(['product_id' => $args['product']], [
-            'count' => ++$count,
-            'sum' => $sum += $args['rating']
-        ]);
+        $rate->save();
+        $rateAvg = round(Rate::where('product_id', $args['product'])->get()->avg('rate'),1);
 
-        $rateModel = $this->rate->where('product_id', $args['product'])->first();
-        $rateModel->rating = round($sum / $count, 1);
-        return $rateModel;
+        return $rateAvg;
     }
 
-    public function destroy(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
+    public function updateRate(?ObjectType $rootValue, array $args, GraphQLContext $context): Rate
+    {
+        $this->validator->validate($args, [
+            'rate' => 'numeric|min:1|max:5'
+        ]);
+        if($rate = Rate::find($args['id']))
+        {
+            if(!empty($args['rate'])) {
+                $rate->rate = $args['rate'];
+            }
+        }
+        $rate->save();
+
+        $rateAvg = round(Rate::where('product_id', $args['product'])->get()->avg('rate'),1);
+        return $rate;
+    }
+
+
+
+    public function deleteRate(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
         if($rate = $this->rate->find($args['id'])){
             $rate->delete();

@@ -13,12 +13,12 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('rates', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('count');
-            $table->unsignedBigInteger('sum');
-            $table->unsignedBigInteger('product_id')->unique();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedBigInteger('id')->autoIncrement();
+            $table->integer('rate');
+            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
+            $table->unique(['product_id','user_id']);
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

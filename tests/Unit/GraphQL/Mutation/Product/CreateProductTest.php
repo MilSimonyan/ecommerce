@@ -11,7 +11,7 @@ class CreateProductTest extends TestCase
         $name = "Car";
         $description = "The car is BMW";
 
-        $response = $this->graphql(/** @lang GraphQL */ '
+        $response = $this->postGraphQL(/** @lang GraphQL */ '
         mutation {
                     createProduct(
                         input: {
