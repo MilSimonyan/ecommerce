@@ -19,14 +19,14 @@ extend type Query {
 }
 
 input RateCreateInput{
-    user: Int!
+    user_id: Int!
     rate: Int!
-    product: Int!
+    product_id: Int!
 }
 
 input RateUpdateInput {
-    user: ID!
-    product: ID!
+    user_id: ID!
+    product_id: ID!
     rate: Int!
 }
 

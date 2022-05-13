@@ -59,7 +59,7 @@ final class RateMutator
         $this->validator->validate($args, [
             'rate' => 'numeric|min:1|max:5'
         ]);
-        if($rate = Rate::find($args['id']))
+        if($rate = Rate::find($args['user']))
         {
             if(!empty($args['rate'])) {
                 $rate->rate = $args['rate'];
@@ -68,6 +68,7 @@ final class RateMutator
         $rate->save();
 
         $rateAvg = round(Rate::where('product_id', $args['product'])->get()->avg('rate'),1);
+
         return $rate;
     }
 
