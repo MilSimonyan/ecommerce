@@ -81,7 +81,7 @@ final class AttributeMutator
      */
     public function destroy(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-        if ($attribute = $this->attribute->find($args['id'])) {
+        if ($attribute = $this->attributeRepository->find($args['id'])) {
             $attribute->delete();
             return true;
         }
