@@ -24,7 +24,7 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
 });
 
 Route::get('/send', [UserController::class, 'sendMail']);
-Route::get('/verify/{slug}', [UserController::class, 'verification']);
+Route::get('/verify', [UserController::class, 'verification']);
 
 Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verification'])->middleware(['auth', 'signed'])->name('verification.verify');
 

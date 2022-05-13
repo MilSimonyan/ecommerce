@@ -15,7 +15,7 @@ extend type Query {
     rateCount(product_id: ID!, rating: Int! ): Int! @field(resolver: "App\\GraphQL\\Queries\\Rate@getCount")
 
     # All rates
-    rates(product_id:ID!): myRate!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
+    rates(product_id:ID!): Rate!  @field(resolver: "App\\GraphQL\\Queries\\Rate@getAvg")
 }
 
 input RateCreateInput{

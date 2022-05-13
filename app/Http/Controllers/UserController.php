@@ -97,7 +97,7 @@ class UserController extends Controller
     {
         $details = [
             'title' => 'verify mail',
-            'body' => 'http://127.0.0.1:8000/api/verify?' . implode('&', $token)
+            'body' => 'http://ecommerce/api/verify?' . implode('&', $token)
         ];
 
         Mail::to($email)->send(new Sender($details));
@@ -115,6 +115,7 @@ class UserController extends Controller
         $user->email = $details['email'];
         $user->password = $details['password'];
         $user->save();
+
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user

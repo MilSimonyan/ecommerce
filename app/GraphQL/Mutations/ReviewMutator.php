@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\User;
 use Doctrine\DBAL\Types\ObjectType;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -36,13 +37,14 @@ final class ReviewMutator
             'description' => 'required|min:5|max:500'
         ]);
 
-        if ($product = Product::find($args['product'])) {
-            $review = new Review();
-            $review->description = $args['description'];
-            $review->product_id = $args['product'];
+        $product = Product::find($args['product_id']);
+        $user = User::find($args['user_id']);
 
-            $review->save();
-        }
+        $review = new Review();
+        $review->description = $args['description'];
+        $review->product()->associate($product);
+        $review->user()->associate($user);
+        $review->save();
 
         return $review;
     }

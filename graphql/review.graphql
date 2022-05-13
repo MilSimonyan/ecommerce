@@ -6,7 +6,7 @@ extend type Mutation{
 
 input CreateReviewInput{
     description: String!,
-    product: Int!,
+    product_id: Int!,
     user_id: Int!
 }
 
@@ -21,5 +21,6 @@ extend type Query {
 type Review {
     id: ID!
     description: String!
+    product_id: Int!
 }
 
