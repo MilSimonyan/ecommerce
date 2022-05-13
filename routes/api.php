@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'register']]], function($router) {
+Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'register']]], function ($router) {
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/login', [UserController::class, 'login']);//->middleware(['auth', 'verified']);
     Route::post('/logout', [UserController::class, 'logout']);
@@ -26,7 +26,7 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
 Route::get('/send', [UserController::class, 'sendMail']);
 Route::get('/verify/{slug}', [UserController::class, 'verification']);
 
-Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verification'] )->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verification'])->middleware(['auth', 'signed'])->name('verification.verify');
 
 
 

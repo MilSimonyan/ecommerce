@@ -2,15 +2,9 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-=======
 use App\Mail\Sender;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
->>>>>>> b822abfa06a9fa94c71eb84139d30dbb005a7c84
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,7 +30,7 @@ class UserController extends Controller
         }
 
         $details = [
-            'email=' . $request->email ,
+            'email=' . $request->email,
             'password=' . Hash::make($request->password),
             'name=' . $request->name
         ];
@@ -46,7 +40,7 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
@@ -64,7 +58,7 @@ class UserController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function logout()
     {
@@ -73,7 +67,9 @@ class UserController extends Controller
         return response()->json(['message' => 'User successfully logged out.']);
     }
 
-
+    /**
+     * @return JsonResponse
+     */
     public function profile()
     {
         return response()->json(auth()->user());
@@ -81,7 +77,7 @@ class UserController extends Controller
 
     /**
      * @param $token
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     protected function respondWithToken($token)
     {
@@ -92,18 +88,25 @@ class UserController extends Controller
         ]);
     }
 
-
-    public function sendMail($token , $email)
+    /**
+     * @param $token
+     * @param $email
+     * @return void
+     */
+    public function sendMail($token, $email)
     {
         $details = [
             'title' => 'verify mail',
-            'body' => 'http://127.0.0.1:8000/api/verify?' . implode('&',$token)
+            'body' => 'http://127.0.0.1:8000/api/verify?' . implode('&', $token)
         ];
 
         Mail::to($email)->send(new Sender($details));
-        return "aaa";
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function verification(Request $request)
     {
         $user = new User();
