@@ -34,7 +34,7 @@ type Rate {
     id: ID!
     rate: Int
     product_id: Int
-    rateAVG: Float!
+    rating: Float!
 }
 
 

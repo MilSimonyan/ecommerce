@@ -6,8 +6,10 @@ use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
 use Doctrine\DBAL\Types\ObjectType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use phpDocumentor\Reflection\Types\Boolean;
 
 final class ReviewMutator
 {
@@ -77,14 +79,15 @@ final class ReviewMutator
      * @param ObjectType|null $objectType
      * @param array $args
      * @param GraphQLContext $context
-     * @return Review
+     * @return bool
      */
-    public function deleteReview(?ObjectType $objectType, array $args, GraphQLContext $context): Review
+    public function deleteReview(?ObjectType $objectType, array $args, GraphQLContext $context): bool
     {
-        if ($review = Review::find($args['id'])) {
-            $review->delete();
+        try {
+            $review = Review::findOrFail($args['id']);
+            return $review->delete();
+        } catch (ModelNotFoundException){
+            return false;
         }
-
-        return $review;
     }
 }

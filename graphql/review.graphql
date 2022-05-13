@@ -1,10 +1,17 @@
 extend type Mutation{
     createReview(input: CreateReviewInput  @spread): Review! @field(resolver: "App\\GraphQL\\Mutations\\ReviewMutator@storeReview")
-    updateReview(id: ID!, description: String): Review! @field(resolver: "App\\GraphQL\\Mutations\\ReviewMutator@updateReview")
-    deleteReview(id: ID!): Review! @field(resolver: "App\\GraphQL\\Mutations\\ReviewMutator@deleteReview")
+    updateReview(input: UpdateReviewInput @spread): Review! @field(resolver: "App\\GraphQL\\Mutations\\ReviewMutator@updateReview")
+    deleteReview(id: ID!): Boolean! @field(resolver: "App\\GraphQL\\Mutations\\ReviewMutator@deleteReview")
 }
 
 input CreateReviewInput{
+    description: String!,
+    product_id: Int!,
+    user_id: Int!
+}
+
+input UpdateReviewInput {
+    id: ID!
     description: String!,
     product_id: Int!,
     user_id: Int!
