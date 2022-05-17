@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Sender;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    use MustVerifyEmail;
+
 
     /**
      * @param Request $request
@@ -19,6 +24,7 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:2|max:100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -29,13 +35,22 @@ class UserController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $details = [
-            'email=' . $request->email,
-            'password=' . Hash::make($request->password),
-            'name=' . $request->name
-        ];
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-        $this->sendMail($details, $request->email);
+
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
+
+
+
+
+        //$this->sendMail($details, $request->email);
     }
 
     /**
@@ -109,16 +124,6 @@ class UserController extends Controller
      */
     public function verification(Request $request)
     {
-        $user = new User();
-        $details = $request->toArray();
-        $user->name = $details['name'];
-        $user->email = $details['email'];
-        $user->password = $details['password'];
-        $user->save();
 
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
     }
 }
