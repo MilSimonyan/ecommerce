@@ -23,21 +23,25 @@ extend type Query {
 }
 
 input CreateProductInput {
-    user_id:     Int!,
-    name:        String!,
-    description: String!,
-    categories:  [Int!],
-    attributes:  [Int],
-    values:      [String]
+    user_id:        Int!,
+    name:           String!,
+    description:    String!,
+    category_id:    Int!,
+    attributeValue: [AttributeValues]
+}
+
+input AttributeValues {
+    attribute_id: Int!
+    value:        String!
 }
 
 input UpdateProductInput {
-    id:          ID!,
-    name:        String,
-    description: String,
-    categories:  [Int],
-    attributes:  [Int],
-    values:      [String]
+    id:             ID!,
+    name:           String,
+    description:    String,
+    category_id:    Int,
+    attributeValue: [AttributeValues]
+
 }
 
 type Product{

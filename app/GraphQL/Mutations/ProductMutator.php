@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
@@ -35,8 +34,12 @@ final class ProductMutator
     public function create(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {
         $this->validator->validate($args, [
+            'user_id' => 'required|exists:users,id',
             'name' => 'min:3|max:50',
-            'description' => 'min:5|max:500'
+            'description' => 'min:5|max:500',
+            'category_id' => 'exists:categories,id',
+            'attributeValue.*.attribute_id' => 'required|exists:attributes,id',
+            'attributeValue.*.value' => 'required|string',
         ]);
 
         $product = new Product();
@@ -45,20 +48,11 @@ final class ProductMutator
         $product->description = $args['description'];
         $product->save();
 
-        if (isset($args['categories']) && $category = Category::find($args['categories'])) {
-            $product->categories()->sync($category);
-        }
+        $category = Category::find($args['category_id']);
+        $product->categories()->sync($category);
 
-        if (isset($args['attributes']) && Attribute::find($args['attributes'])) {
-            $attributes = [];
-            $count = count($args['values']);
-
-            for ($i = 0; $i < $count; $i++) {
-                $attributes[$args['attributes'][$i]]['value'] = $args['values'][$i];
-            }
-
-            $product->attributes()->sync($attributes);
-        }
+        $attributes = $args['attributeValue'];
+        $product->attributes()->sync($attributes);
 
         return $product;
     }
@@ -72,30 +66,28 @@ final class ProductMutator
      */
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {
-        $product = Product::find($args['id']);
-
         $this->validator->validate($args, [
+            'id' => 'required|exists:products,id',
             'name' => 'min:3|max:50',
             'description' => 'min:10',
+            'category_id' => 'exists:categories,id',
+            'attributeValue.*.attribute_id' => 'exists:attributes,id',
+            'attributeValue.*.value' => 'string',
         ]);
 
-        if (isset($args['name'])) {
-            $product->name = $args['name'];
-        }
-
-        if (isset($args['description'])) {
-            $product->description = $args['description'];
-        }
-
-        if (isset($args['categories']) && $category = Category::find($args['categories'])) {
-            $product->categories()->sync($category);
-        }
-
-        if (isset($args['attributes']) && $attribute = Attribute::find($args['attributes'])) {
-            $product->attributes()->sync($attribute);
-        }
-
+        $product = Product::find($args['id']);
+        $product->name = $args['name'];
+        $product->description = $args['description'];
         $product->save();
+
+        $category = Category::find($args['category_id']);
+        $product->categories()->sync($category);
+
+        $attribute = [];
+        foreach ($args['attributeValue'] as $arg) {
+            $attribute[$arg['attribute_id']]['value'] = $arg['value'];
+        }
+        $product->attributes()->sync($attribute, false);
 
         return $product;
     }
