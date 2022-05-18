@@ -2,27 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SiteEmail;
-use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Auth\Events\Registered;
 
 class VerificationController extends Controller
 {
-    use MustVerifyEmail;
-
-    public function noti(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendMain(Request $request)
     {
-        $sitemail = new SiteEmail();
-        if($sitemail->hasVerifiedEmail()){
-            $sitemail->sendEmailVerificationNotification();
-        };
+        if (!$request->user()->hasVerifiedEmail()) {
+            $request->user()->sendEmailVerificationNotification();
+            return response()->json([
+                'message' => 'check your email'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'your mail is verified at ' . $request->user()->email_verified_at
+            ]);
+        }
     }
 
-    public function notify(VerifyEmail $email)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify(Request $request)
     {
-        dd($email->toMail());
+        $request->user()->markEmailAsVerified();
+        return response()->json([
+            'message' => 'mail verified at ' . $request->user()->email_verified_at
+        ]);
     }
 }

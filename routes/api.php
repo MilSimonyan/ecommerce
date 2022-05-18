@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VerificationController;
 
@@ -27,21 +26,7 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
 
 Route::get('/send', [UserController::class, 'sendMail']);
 Route::get('/verify', [UserController::class, 'verification']);
-
-Route::get('/verification', [VerificationController::class, 'notify']);
-
-Route::get('/email/verify/{id}/{hash}', [UserController::class, 'verification'])->middleware(['auth', 'signed'])->name('verification.verify');
-
-
-
-
-
-Route::get('/email/verify',[ VerificationController::class,'noti'])->middleware('auth');
-
-
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 )->middleware(['auth', 'signed'])->name('verification.verify');
-
-
-
-
+Route::post('/email/verification-notification', [VerificationController::class, 'sendMain']
+)->middleware(['auth', 'throttle:6,1'])->name('verification.send');

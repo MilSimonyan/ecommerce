@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Sender;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,14 +13,12 @@ class UserController extends Controller
 {
     use MustVerifyEmail;
 
-
     /**
      * @param Request $request
-     * @return JsonResponse|void
+     * @return JsonResponse
      */
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:2|max:100',
             'email' => 'required|string|email|max:100|unique:users',
@@ -41,16 +35,10 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
         ], 201);
-
-
-
-
-        //$this->sendMail($details, $request->email);
     }
 
     /**
@@ -101,29 +89,5 @@ class UserController extends Controller
             'token_type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
-    }
-
-    /**
-     * @param $token
-     * @param $email
-     * @return void
-     */
-    public function sendMail($token, $email)
-    {
-        $details = [
-            'title' => 'verify mail',
-            'body' => 'http://ecommerce/api/verify?' . implode('&', $token)
-        ];
-
-        Mail::to($email)->send(new Sender($details));
-    }
-
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function verification(Request $request)
-    {
-
     }
 }
