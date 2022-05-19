@@ -20,11 +20,9 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/login', [UserController::class, 'login']);//->middleware(['auth', 'verified']);
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/refresh', [UserController::class, 'refresh']);
     Route::post('/profile', [UserController::class, 'profile']);
 });
 
-Route::get('/send', [UserController::class, 'sendMail']);
 Route::get('/verify', [UserController::class, 'verification']);
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 )->middleware(['auth', 'signed'])->name('verification.verify');

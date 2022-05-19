@@ -41,7 +41,9 @@ final class RateMutator
     public function storeRate(?ObjectType $rootValue, array $args, GraphQLContext $context): Rate
     {
         $this->validator->validate($args, [
-            'rate' => 'numeric|min:1|max:5'
+            'rate' => 'numeric|min:1|max:5',
+            'product_id' => 'required|exists:products,id',
+            'user_id' => 'required|exists:users,id',
         ]);
         $rate = new Rate();
         $rate->rate = $args['rate'];
@@ -68,7 +70,9 @@ final class RateMutator
     public function updateRate(?ObjectType $rootValue, array $args, GraphQLContext $context): Rate
     {
         $this->validator->validate($args, [
-            'rate' => 'numeric|min:1|max:5'
+            'rate' => 'numeric|min:1|max:5',
+            'product_id' => 'exists:products,id',
+            'user_id' => '|exists:users,id',
         ]);
 
         $rate = Rate::where('user_id', $args['user_id'])->where('product_id', $args['product_id'])->first();

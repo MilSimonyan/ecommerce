@@ -34,10 +34,11 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-
+        $token = auth()->attempt($request->all());
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            'user' => $user,
+            'token' => $token
         ], 201);
     }
 

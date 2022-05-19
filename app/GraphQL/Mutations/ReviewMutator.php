@@ -36,7 +36,9 @@ final class ReviewMutator
     public function storeReview(?ObjectType $objectType, array $args, GraphQLContext $context): Review
     {
         $this->validator->validate($args, [
-            'description' => 'required|min:5|max:500'
+            'description' => 'required|min:5|max:500',
+            'user_id' => 'exists:users.id',
+            'product_id' => 'exists:products,id'
         ]);
 
         $product = Product::find($args['product_id']);
@@ -61,16 +63,16 @@ final class ReviewMutator
     public function updateReview(?ObjectType $objectType, array $args, GraphQLContext $context): Review
     {
         $this->validator->validate($args, [
-            'description' => 'min:5|max:500'
+            'id' => 'required|exists:reviews,id',
+            'description' => 'required|min:5|max:500',
+            'user_id' => 'required|exists:users.id',
+            'product_id' => 'exists:products,id'
         ]);
 
-        if ($review = Review::find($args['id'])) {
-            if (isset($args['description'])) {
-                $review->description = $args['description'];
-            }
+        $review = Review::find($args['id']);
+        $review->description = $args['description'];
 
             $review->save();
-        }
 
         return $review;
     }
