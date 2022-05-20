@@ -17,7 +17,7 @@ use App\Http\Controllers\VerificationController;
 
 Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'register']]], function ($router) {
     Route::post('/register', [UserController::class, 'register']);
-    Route::post('/login', [UserController::class, 'login']);//->middleware(['auth', 'verified']);
+    Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/profile', [UserController::class, 'profile']);
 });
