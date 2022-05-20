@@ -43,7 +43,7 @@ final class AttributeMutator
             'name' => 'required|min:2|max:30'
         ]);
 
-        $attribute = new Attribute();
+        $attribute = $this->attributeRepository->model();
         $attribute->name = $args['name'];
         $attribute->save();
 
