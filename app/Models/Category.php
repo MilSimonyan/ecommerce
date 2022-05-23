@@ -37,8 +37,9 @@ class Category extends Model
      * @var string[]
      */
     protected $fillable = [
+        'user_id',
         'name',
-        'description',
+        'description'
     ];
 
     /**
