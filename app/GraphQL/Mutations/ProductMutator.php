@@ -7,6 +7,7 @@ use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class ProductMutator
@@ -29,12 +30,11 @@ final class ProductMutator
      * @param array $args
      * @param GraphQLContext $context
      * @return Product
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function create(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {
         $this->validator->validate($args, [
-            'user_id' => 'required|exists:users,id',
             'name' => 'min:3|max:50',
             'description' => 'min:5|max:500',
             'category_id' => 'exists:categories,id',
@@ -43,7 +43,7 @@ final class ProductMutator
         ]);
 
         $product = new Product();
-        $product->user_id = $args['user_id'];
+        $product->user_id = auth()->user()->id;
         $product->name = $args['name'];
         $product->description = $args['description'];
         $product->save();
@@ -62,7 +62,7 @@ final class ProductMutator
      * @param array $args
      * @param GraphQLContext $context
      * @return Product
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {

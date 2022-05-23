@@ -15,10 +15,9 @@ use App\Http\Controllers\VerificationController;
 |
 */
 
-
 Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'register']]], function ($router) {
     Route::post('/register', [UserController::class, 'register']);
-    Route::post('/login', [UserController::class, 'login']);//->middleware(['auth', 'verified']);
+    Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/profile', [UserController::class, 'profile']);
 });
@@ -26,5 +25,5 @@ Route::group(['middleware' => 'api', 'auth:api', ['except' => ['login', 'registe
 Route::get('/verify', [UserController::class, 'verification']);
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 )->middleware(['auth', 'signed'])->name('verification.verify');
-Route::post('/email/verification-notification', [VerificationController::class, 'sendMain']
+Route::post('/email/verification-notification', [VerificationController::class, 'sendMail']
 )->middleware(['auth', 'throttle:6,1'])->name('verification.send');

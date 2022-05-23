@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\Product;
 use App\Models\Rate;
 use App\Models\User;
+use App\Repositories\RateRepository;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -12,9 +13,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class RateMutator
 {
     /**
-     * @var Rate
+     * @var RateRepository
      */
-    protected Rate $rate;
+    protected RateRepository $rateRepository;
 
     /**
      * @var Factory
@@ -23,12 +24,12 @@ final class RateMutator
 
     /**
      * @param Factory $validator
-     * @param Rate $rate
+     * @param RateRepository $rateRepository
      */
-    public function __construct(Factory $validator, Rate $rate)
+    public function __construct(Factory $validator, RateRepository $rateRepository)
     {
         $this->validator = $validator;
-        $this->rate = $rate;
+        $this->rateRepository = $rateRepository;
     }
 
     /**
@@ -45,7 +46,7 @@ final class RateMutator
             'product_id' => 'required|exists:products,id',
             'user_id' => 'required|exists:users,id',
         ]);
-        $rate = new Rate();
+        $rate = $this->rateRepository->model();
         $rate->rate = $args['rate'];
 
         $user = User::find($args['user_id']);
@@ -55,7 +56,7 @@ final class RateMutator
         $rate->product()->associate($product);
 
         $rate->save();
-        $rate->rating = round(Rate::where('product_id', $args['product_id'])->get()->avg('rate'), 1);
+        $rate->rating = round($rate->where('product_id', $args['product_id'])->get()->avg('rate'), 1);
 
         return $rate;
     }
@@ -75,11 +76,13 @@ final class RateMutator
             'user_id' => '|exists:users,id',
         ]);
 
-        $rate = Rate::where('user_id', $args['user_id'])->where('product_id', $args['product_id'])->first();
+        $rate = $this->rateRepository;
+
+        $rate = $rate->where('user_id', $args['user_id'])->where('product_id', $args['product_id'])->first();
         $rate->rate = $args['rate'];
         $rate->save();
 
-        $rate->rating = round(Rate::where('product_id', $args['product_id'])->get()->avg('rate'), 1);
+        $rate->rating = round($rate->where('product_id', $args['product_id'])->get()->avg('rate'), 1);
 
         return $rate;
     }
@@ -92,7 +95,7 @@ final class RateMutator
      */
     public function deleteRate(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-        if ($rate = $this->rate->find($args['id'])) {
+        if ($rate = $this->rateRepository->find($args['id'])) {
             $rate->delete();
             return true;
         }

@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserId($value)
+ * @property-read \App\Models\Product $product
+ * @property-read \App\Models\User $user
  */
 class Review extends Model
 {

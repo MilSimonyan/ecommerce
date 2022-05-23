@@ -1,4 +1,4 @@
-extend type Mutation{
+extend type Mutation @guard{
     createProduct(
          input: CreateProductInput @spread
     ):
@@ -23,7 +23,6 @@ extend type Query {
 }
 
 input CreateProductInput {
-    user_id:        Int!,
     name:           String!,
     description:    String!,
     category_id:    Int!,

@@ -40,6 +40,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Rate|null $rates
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
+ * @property-read int|null $reviews_count
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
