@@ -7,7 +7,7 @@ extend type Query {
     @field(resolver: "App\\GraphQL\\Queries\\AttributeQuery@getAll")
 }
 
-extend type Mutation {
+extend type Mutation @guard {
     createAttribute(input: AttributeCreateInput  @spread): Attribute!
     @field(resolver: "App\\GraphQL\\Mutations\\AttributeMutator@store")
 
