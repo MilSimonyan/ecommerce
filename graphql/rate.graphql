@@ -1,11 +1,11 @@
-extend type Mutation{
+extend type Mutation @guard{
     createRate(input: RateCreateInput  @spread): Rate!
     @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@storeRate")
 
     updateRate(input: RateUpdateInput @spread): Rate!
     @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@updateRate")
 
-    deleteRate(id: ID!): Boolean!
+    deleteRate(product_id: ID!): Boolean!
     @field(resolver: "App\\GraphQL\\Mutations\\RateMutator@deleteRate")
 }
 
@@ -19,13 +19,11 @@ extend type Query {
 }
 
 input RateCreateInput{
-    user_id: Int!
     rate: Int!
     product_id: Int!
 }
 
 input RateUpdateInput {
-    user_id: ID!
     product_id: ID!
     rate: Int!
 }

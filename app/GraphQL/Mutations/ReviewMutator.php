@@ -41,12 +41,11 @@ final class ReviewMutator
         ]);
 
         $product = Product::find($args['product_id']);
-        $user = User::find($args['user_id']);
 
         $review = new Review();
+        $review->user_id = auth()->user()->id;
         $review->description = $args['description'];
         $review->product()->associate($product);
-        $review->user()->associate($user);
         $review->save();
 
         return $review;
@@ -84,11 +83,12 @@ final class ReviewMutator
      */
     public function deleteReview(?ObjectType $objectType, array $args, GraphQLContext $context): bool
     {
-        try {
-            $review = Review::findOrFail($args['id']);
-            return $review->delete();
-        } catch (ModelNotFoundException){
+        $user_id = auth()->user()->id;
+        $review = Review::where('user_id', $user_id)->where('id', $args['id'])->first();
+            if($review){
+                $review->delete();
+                return true;
+            }
             return false;
-        }
     }
 }
