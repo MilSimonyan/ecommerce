@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Factory;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use phpDocumentor\Reflection\Types\Boolean;
 
 final class ReviewMutator
 {
@@ -37,7 +36,7 @@ final class ReviewMutator
     {
         $this->validator->validate($args, [
             'description' => 'required|min:5|max:500',
-            'user_id' => 'exists:users.id',
+            'user_id' => 'exists:users,id',
             'product_id' => 'exists:products,id'
         ]);
 
