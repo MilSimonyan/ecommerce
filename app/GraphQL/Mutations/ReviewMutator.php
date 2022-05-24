@@ -7,7 +7,9 @@ use App\Models\Review;
 use App\Models\User;
 use Doctrine\DBAL\Types\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class ReviewMutator
@@ -36,7 +38,6 @@ final class ReviewMutator
     {
         $this->validator->validate($args, [
             'description' => 'required|min:5|max:500',
-            'user_id' => 'exists:users,id',
             'product_id' => 'exists:products,id'
         ]);
 
@@ -61,11 +62,13 @@ final class ReviewMutator
     public function updateReview(?ObjectType $objectType, array $args, GraphQLContext $context): Review
     {
         $this->validator->validate($args, [
-            'id' => 'required|exists:reviews,id',
+            'id' => [ 'required', Rule::exists('reviews', 'id')->where(
+                fn(Builder $query) => $query->where('user_id', auth()->user()->id)
+            )],
             'description' => 'required|min:5|max:500',
-            'user_id' => 'required|exists:users.id',
             'product_id' => 'exists:products,id'
         ]);
+
 
         $review = Review::find($args['id']);
         $review->description = $args['description'];

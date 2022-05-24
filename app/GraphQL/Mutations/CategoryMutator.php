@@ -5,7 +5,10 @@ namespace App\GraphQL\Mutations;
 use App\Models\Category;
 use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 
@@ -41,6 +44,7 @@ final class CategoryMutator
         $category = new Category();
         $category->name = $args['name'];
         $category->description = $args['description'];
+        $category->user_id =  auth()->user()->id;
         $category->save();
 
         if (isset($args['products']) && $product = Product::find($args['products'])) {
@@ -60,20 +64,20 @@ final class CategoryMutator
     public function updateCategory(?ObjectType $rootValue, array $args, GraphQLContext $context): Category
     {
         $this->validator->validate($args, [
+            'id' => ['required',
+                Rule::exists('categories', 'id')->where(
+                    fn(Builder $query) => $query->where('user_id', auth()->user()->id)
+                )],
             'name' => 'min:3|max:50',
             'description' => 'max:500'
         ]);
 
-        if ($category = Category::find($args['id'])) {
-            if (isset($args['name'])) {
-                $category->name = $args['name'];
-            }
+            $category = Category::find($args['id']);
+            $category->name = Arr::get($args, 'name', $category->name);
+            $category->description = Arr::get($args, 'description', $category->description);
 
-            if (isset($args['description'])) {
-                $category->description = $args['description'];
-            }
             $category->save();
-        }
+
 
         return $category;
     }
@@ -82,14 +86,15 @@ final class CategoryMutator
      * @param ObjectType|null $rootValue
      * @param array $args
      * @param GraphQLContext $context
-     * @return Category
+     * @return bool
      */
-    public function deleteCategory(?ObjectType $rootValue, array $args, GraphQLContext $context): Category
+    public function deleteCategory(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-        if ($category = Category::find($args['id'])) {
+        $category = Category::where('user_id', auth()->user()->id)->where('id', $args['id'])->first();
+        if ($category) {
             $category->delete();
+            return true;
         }
-
-        return $category;
+        return false;
     }
 }

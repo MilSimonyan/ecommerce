@@ -2,7 +2,7 @@
 extend type Mutation {
     createCategory(input: CategoryCreateInput  @spread) : Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@storeCategory")
     updateCategory(input: CategoryUpdateInput @spread): Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@updatecategory")
-    deleteCategory(id: ID!) : Category! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@deleteCategory")
+    deleteCategory(id: ID!) : Boolean! @field(resolver: "App\\GraphQL\\Mutations\\CategoryMutator@deleteCategory")
 }
 
 
