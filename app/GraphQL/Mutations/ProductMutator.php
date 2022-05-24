@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -68,7 +69,8 @@ final class ProductMutator
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {
         $this->validator->validate($args, [
-            'id' => 'required|exists:products,id',
+            'id' => Rule::exists('products', 'id')->where(
+                fn(Builder $query) => $query->where('user_id', auth()->user()->id)),
             'name' => 'min:3|max:50',
             'description' => 'min:10',
             'category_id' => 'exists:categories,id',
