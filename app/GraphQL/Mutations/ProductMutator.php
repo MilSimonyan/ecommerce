@@ -7,6 +7,7 @@ use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -75,7 +76,8 @@ final class ProductMutator
             'attributeValue.*.value' => 'string',
         ]);
 
-        $product = Product::find($args['id']);
+        $product = Product::where('user_id', auth()->user()->id)->findOrFail($args['id']);
+
         $product->name = $args['name'];
         $product->description = $args['description'];
         $product->save();
@@ -101,7 +103,9 @@ final class ProductMutator
     public function delete(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
         try {
-            return Product::findOrFail($args['id'])->delete();
+            return Product::where('user_id', auth()->user()->id)
+                ->findOrFail($args['id'])
+                ->delete();
         } catch (ModelNotFoundException) {
             return false;
         }
