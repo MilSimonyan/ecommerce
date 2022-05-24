@@ -40,7 +40,6 @@ input UpdateProductInput {
     description:    String,
     category_id:    Int,
     attributeValue: [AttributeValues]
-
 }
 
 type Product{

@@ -6,7 +6,10 @@ use App\Models\Category;
 use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -67,7 +70,8 @@ final class ProductMutator
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Product
     {
         $this->validator->validate($args, [
-            'id' => 'required|exists:products,id',
+            'id' => Rule::exists('products', 'id')->where(
+                fn(Builder $query) => $query->where('user_id', auth()->user()->id)),
             'name' => 'min:3|max:50',
             'description' => 'min:10',
             'category_id' => 'exists:categories,id',
@@ -75,9 +79,10 @@ final class ProductMutator
             'attributeValue.*.value' => 'string',
         ]);
 
-        $product = Product::find($args['id']);
-        $product->name = $args['name'];
-        $product->description = $args['description'];
+        $product = Product::where('user_id', auth()->user()->id)->findOrFail($args['id']);
+
+        $product->name =Arr::get($args, 'name',$product->name);
+        $product->description =Arr::get($args, 'description',$product->description);
         $product->save();
 
         $category = Category::find($args['category_id']);
@@ -101,7 +106,9 @@ final class ProductMutator
     public function delete(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
         try {
-            return Product::findOrFail($args['id'])->delete();
+            return Product::where('user_id', auth()->user()->id)
+                ->findOrFail($args['id'])
+                ->delete();
         } catch (ModelNotFoundException) {
             return false;
         }

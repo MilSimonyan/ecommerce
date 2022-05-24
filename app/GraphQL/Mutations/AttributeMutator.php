@@ -44,6 +44,7 @@ final class AttributeMutator
         ]);
 
         $attribute = $this->attributeRepository->model();
+        $attribute->user_id = auth()->user()->id;
         $attribute->name = $args['name'];
         $attribute->save();
 
@@ -64,9 +65,14 @@ final class AttributeMutator
         ]);
 
         $attribute = $this->attributeRepository->find($args['id']);
+
+        if(auth()->user()->id != $attribute->user_id) {
+            return Throw new \Exception('You are not able to update this');
+        }
+
         $attribute->update([
             'id' => $args['id'],
-            'name' => $args['name']
+            'name' => $args['name'],
         ]);
         $attribute->save();
 
@@ -81,7 +87,10 @@ final class AttributeMutator
      */
     public function destroy(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-        if ($attribute = $this->attributeRepository->find($args['id'])) {
+
+        $attribute = $this->attributeRepository->find($args['id']);
+
+        if ($attribute && $attribute->user_id == auth()->user()->id) {
             $attribute->delete();
             return true;
         }
