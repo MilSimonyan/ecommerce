@@ -33,6 +33,12 @@ class Attribute extends Model
     /**
      * @return BelongsToMany
      */
+
+    protected $fillable = [
+        'name',
+        'user_id'
+    ];
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
