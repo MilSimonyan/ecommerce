@@ -5,7 +5,10 @@ namespace App\GraphQL\Mutations;
 use App\Models\Attribute;
 use App\Repositories\AttributeRepository;
 use GraphQL\Type\Definition\ObjectType;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class AttributeMutator
@@ -61,19 +64,18 @@ final class AttributeMutator
     public function update(?ObjectType $rootValue, array $args, GraphQLContext $context): Attribute
     {
         $this->validator->validate($args, [
-            'name' => 'required|min:2|max:30'
+            'name' => 'required|min:2|max:30',
+            'id' => ['required',
+        Rule::exists('attributes', 'id')->where(
+            fn(Builder $query) => $query->where('user_id', auth()->user()->id)
+        )],
         ]);
 
         $attribute = $this->attributeRepository->find($args['id']);
 
-        if(auth()->user()->id != $attribute->user_id) {
-            return Throw new \Exception('You are not able to update this');
-        }
+        $attribute->id = Arr::get($args, 'id', $attribute->id);
+        $attribute->name = Arr::get($args, 'name', $attribute->name);
 
-        $attribute->update([
-            'id' => $args['id'],
-            'name' => $args['name'],
-        ]);
         $attribute->save();
 
         return $attribute;
@@ -87,7 +89,6 @@ final class AttributeMutator
      */
     public function destroy(?ObjectType $rootValue, array $args, GraphQLContext $context): bool
     {
-
         $attribute = $this->attributeRepository->find($args['id']);
 
         if ($attribute && $attribute->user_id == auth()->user()->id) {
