@@ -7,6 +7,7 @@ use App\Models\Product;
 use GraphQL\Type\Definition\ObjectType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -80,8 +81,8 @@ final class ProductMutator
 
         $product = Product::where('user_id', auth()->user()->id)->findOrFail($args['id']);
 
-        $product->name = $args['name'];
-        $product->description = $args['description'];
+        $product->name =Arr::get($args, 'name',$product->name);
+        $product->description =Arr::get($args, 'description',$product->description);
         $product->save();
 
         $category = Category::find($args['category_id']);
